@@ -8,11 +8,11 @@ from dimension_reduction import dimension_reduction
 from params import get_embed_params, get_machine_params
 import pandas as pd
 
-train_file_path = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/train_list/'
-test_file_path = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/test_list/'
-embed_model_path = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/embedding_model/'
-machine_model_path = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/'
-path = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/csv_files/'
+train_file_path = '/home/ubuntu/project2/train_list/'
+test_file_path = '/home/ubuntu/project2/test_list/'
+embed_model_path = '/home/ubuntu/project2/embedding_model/'
+machine_model_path = '/home/ubuntu/project2/machine_model/'
+path = '/home/ubuntu/project2/csv_files/'
 
 app = Flask(__name__)
 
@@ -205,7 +205,7 @@ def page3():
             train_df = pd.DataFrame(confusion_matrix(y_train, train_y_pred), index=target_names, columns=target_names)
             test_df = pd.DataFrame(confusion_matrix(y_test, test_y_pred), index=target_names, columns=target_names)
 
-            path = r'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/csv_files/'
+            path = r'/home/ubuntu/project2/csv_files/'
 
             train_df.to_csv(path + 'confusion_matrix_train.csv', index=False)
             test_df.to_csv(path + 'confusion_matrix_test.csv', index=False)
@@ -269,7 +269,7 @@ def page3():
 
 @app.route('/visualization', methods=["GET", "POST"])
 def page4():
-    if os.path.isfile('C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/csv_files/metrics_score_train.csv'):
+    if os.path.isfile('/home/ubuntu/project2/csv_files/metrics_score_train.csv'):
         return render_template('visualization.html', visualization="embedding_and_machineLearning_visualization")
     else:
         return render_template('visualization.html', visualization="embedding_and_visualization")

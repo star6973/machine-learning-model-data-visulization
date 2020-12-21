@@ -9,7 +9,7 @@ def pre_train_machine_learning(embedding_model_name, machine_type, X_train, X_te
     if machine_type == 'Logistic':
 
         # load the machine_model from disk
-        filename = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_logistic.pkl'
+        filename = '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_logistic.pkl'
         log_clf = load(filename)
 
         train_y_pred = log_clf.predict(X_train)
@@ -18,7 +18,7 @@ def pre_train_machine_learning(embedding_model_name, machine_type, X_train, X_te
     elif machine_type == 'SVM':
 
         # load the machine_model from disk
-        filename = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_svm.pkl'
+        filename = '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_svm.pkl'
         svm_clf = load(filename)
 
         train_y_pred = svm_clf.predict(X_train)
@@ -27,7 +27,7 @@ def pre_train_machine_learning(embedding_model_name, machine_type, X_train, X_te
     elif machine_type == 'RandomForest':
 
         # load the machine_model from disk
-        filename = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_randomforest.pkl'
+        filename = '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_randomforest.pkl'
         rnd_clf = load(filename)
 
         train_y_pred = rnd_clf.predict(X_train)
@@ -42,7 +42,7 @@ def pre_train_machine_learning(embedding_model_name, machine_type, X_train, X_te
 
         # load the machine_model from disk
         fnn_clf = tf.keras.models.load_model(
-            'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_fnn.h5')
+            '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_fnn.h5')
 
         train_prediction = fnn_clf.predict(X_train.toarray())
         test_prediction = fnn_clf.predict(X_test.toarray())
@@ -74,7 +74,7 @@ def machine_learning(embedding_model_name, machine_type, X_train, X_test, y_trai
         log_clf.fit(X_train, y_train)
 
         # save the machine_model to disk
-        filename = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_logistic.pkl'
+        filename = '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_logistic.pkl'
         dump(log_clf, filename)
 
         train_y_pred = log_clf.predict(X_train)
@@ -86,7 +86,7 @@ def machine_learning(embedding_model_name, machine_type, X_train, X_test, y_trai
         svm_clf.fit(X_train, y_train)
 
         # save the machine_model to disk
-        filename = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/achine_model/' + embedding_model_name.lower() + '_svm.pkl'
+        filename = '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_svm.pkl'
         dump(svm_clf, filename)
 
         train_y_pred = svm_clf.predict(X_train)
@@ -98,7 +98,7 @@ def machine_learning(embedding_model_name, machine_type, X_train, X_test, y_trai
         rnd_clf.fit(X_train, y_train)
 
         # save the machine_model to disk
-        filename = 'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_randomforest.pkl'
+        filename = '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_randomforest.pkl'
         dump(rnd_clf, filename)
 
         train_y_pred = rnd_clf.predict(X_train)
@@ -141,7 +141,7 @@ def machine_learning(embedding_model_name, machine_type, X_train, X_test, y_trai
 
         # save the machine_model to disk
         fnn_clf.save(
-            'C:/Users/battl/PycharmProjects/cse_project/project list/Machine Learning Classification Model Visualization Web Service/machine_model/' + embedding_model_name.lower() + '_fnn.h5')
+            '/home/ubuntu/project2/machine_model/' + embedding_model_name.lower() + '_fnn.h5')
 
         train_prediction = fnn_clf.predict(X_train.toarray())
         test_prediction = fnn_clf.predict(X_test.toarray())
