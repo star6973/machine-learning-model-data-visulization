@@ -403,4 +403,4 @@ if __name__ == "__main__":
     os.system("open http://localhost:{0}".format(port))
 
     app.debug = True
-    app.run(port=port)
+    app.run("0.0.0.0", port=8080)
