@@ -72,3 +72,7 @@ Daumsoft AI Lab Internship Project
 ![img14](./static/img/ppt/result-7.png)
 
 ![img15](./static/img/ppt/result-8.png)
+
+수행 URL
+------
+[Service Web Page](http://54.224.112.107:8080/)
