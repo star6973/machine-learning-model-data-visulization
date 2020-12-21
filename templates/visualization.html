@@ -1,0 +1,2937 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        데이터 시각화
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../static/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <style>
+        .row3 {
+            height: 550px;
+        }
+        .row4 {
+            height: 550px;
+        }
+        .row5 {
+            height: 900px;
+        }
+        .row6 {
+            height: 900px;
+        }
+        .row7 {
+            height: 900px;
+        }
+        .row8 {
+            height: 900px;
+        }
+        .col-container {
+            display: flex;
+            width: 100%;
+        }
+        .col {
+            flex: 1;
+            display: table-cell;
+            padding: 16px;
+        }
+        .col3_1 {
+            height: 500px;
+        }
+        .col3_2 {
+            height: 500px;
+        }
+        .col4_1 {
+            height: 500px;
+        }
+        .col4_2 {
+            height: 500px;
+        }
+        .col5_1 {
+            height: 600px;
+        }
+        .col5_2 {
+            height: 600px;
+        }
+        .col6_1 {
+            height: 600px;
+        }
+        .col6_2 {
+            height: 600px;
+        }
+        .col7_1 {
+            height: 600px;
+        }
+        .col7_2 {
+            height: 600px;
+        }
+        .col8_1 {
+            height: 600px;
+        }
+        .col8_2 {
+            height: 600px;
+        }
+        .legend rect {
+            position: relative;
+            fill:white;
+            stroke:black;
+            opacity:0.8;
+        }
+        .wrapper {
+            resize: both;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <ul class="nav">
+                <li>
+                    <a href="./introduction">
+                        <i class="tim-icons icon-notes"></i>
+                            <p>Introduction</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="./fileUpload">
+                        <i class="tim-icons icon-cloud-upload-94"></i>
+                            <p>File Upload</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="./machineLearning">
+                        <i class="tim-icons icon-spaceship"></i>
+                            <p>Machine Learning</p>
+                    </a>
+                </li>
+                <li class="active ">
+                    <a href="./visualization">
+                        <i class="tim-icons icon-molecule-40"></i>
+                            <p>Data Visualization</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="row1">
+                    <div class="col-12">
+                        <div class="card card-chart">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-sm-6 text-left">
+                                        <h4 class="card-category" style="font-size:14px">Daumsoft AI LAB</h4>
+                                        <h2 class="card-title">Visualization</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="col-12">
+                        {% if visualization == 'embedding_and_visualization' %}
+
+                            <div class="row">
+                                    <div><h3>Train Set Embedding</h3></div>
+                                    <div class="col" id="area1"></div>
+                            </div>
+
+                            <div class="row">
+                                    <div><h3>Test Set Embedding</h3></div>
+                                    <div class="col" id="area2"></div>
+                            </div>
+
+                        {% elif visualization == 'embedding_and_machineLearning_visualization' %}
+
+                            <div class="row3" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">평가지표(훈련)</h3>
+                                        <div class="col3_1" id="area3"></div>
+                                    </div>
+
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">평가지표(테스트)</h3>
+                                        <div class="col3_2" id="area4"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row4" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">오차행렬(훈련)</h3>
+                                        <div class="col4_1" id="area5"></div>
+                                    </div>
+
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">오차행렬(테스트)</h3>
+                                        <div class="col4_2" id="area6"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row5" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">임베딩 방식 분포도(훈련)</h3>
+                                        <div class="col5_1" id="area7"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row6" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">분류 모델 예측 분포도(훈련)</h3>
+                                        <div class="col6_1" id="area9"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row7" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">예측 결과 분포도(훈련)</h3>
+                                        <div class="col7_1" id="area11"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row8" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">틀린 결과 분포도(훈련)</h3>
+                                        <div class="col8_1" id="area13"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row5" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">임베딩 방식 분포도(테스트)</h3>
+                                        <div class="col5_2" id="area8"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row6" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">분류 모델 예측 분포도(테스트)</h3>
+                                        <div class="col6_2" id="area10"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row7" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">예측 결과 분포도(테스트)</h3>
+                                        <div class="col7_2" id="area12"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row8" align="center" style="background-color:">
+                                <div class="col-container">
+                                    <div class="col">
+                                        <h3 class="card-category" style="font-size:18px">틀린 결과 분포도(테스트)</h3>
+                                        <div class="col8_2" id="area14"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#  임베딩 된 훈련 데이터의 시각화  #}
+    <script class="a1">
+        // 훈련 데이터 임베딩
+        var margin = {top: 10, right: 30, bottom: 40, left: 50},
+            width = 800 - margin.left - margin.right,
+            height = 800 - margin.top - margin.bottom;
+
+        var SVG = d3.select("#area1")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")")
+
+        // Add the black box around the chart
+        SVG
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height)
+            .attr("width", width)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var f_train_domain_range_x = new Array;
+        var f_train_domain_range_y = new Array;
+        var trainTargetGroup0;
+        var samplingTraindata0 = new Array;
+
+        //Read the data
+        d3.csv("http://127.0.0.1:8080/embedding_and_visualization_train", function(data) {
+
+            f_train_domain_range_x.push(d3.min(data, function(d) { return parseFloat(d.r0) }) - 1);
+            f_train_domain_range_x.push(d3.max(data, function(d) { return parseFloat(d.r0) }) + 1);
+            f_train_domain_range_y.push(d3.min(data, function(d) { return parseFloat(d.r1) }) - 1);
+            f_train_domain_range_y.push(d3.max(data, function(d) { return parseFloat(d.r1) }) + 1);
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['target'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            for(var i = 0; i < target_names.length * 1000; i++) {
+                samplingTraindata0.push(data[i]);
+            }
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(f_train_domain_range_x[0]), (f_train_domain_range_x[1])])
+                .range([0, width])
+                .nice()
+
+            SVG.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(f_train_domain_range_y[0]), (f_train_domain_range_y[1])])
+                .range([height, 0])
+                .nice()
+
+            SVG.append("g")
+                .call(d3.axisLeft(y))
+
+            // Add X axis label:
+            SVG.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width)
+                .attr("y", height + margin.top + 30)
+                .text("dimension 0")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin.left+10)
+                .attr("x", -margin.top)
+                .text("dimension 1")
+                .style("fill", "black")
+
+            // Customization
+            SVG.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 0.2).style("font-size", 13)
+
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height / width);
+
+            var brush = d3.brush().extent([[0, 0], [width, height]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area1").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.target);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 100 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot00")
+                .data(samplingTraindata0)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot00" + d.target } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.target})
+                .style("fill", function (d) { return color(d.target) } )
+                .on("mouseover", tipMouseover )
+                .on("mouseout", tipMouseout )
+
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(f_train_domain_range_x[0]), (f_train_domain_range_x[1])]).range([0, width]).nice()
+                    y.domain([(f_train_domain_range_y[0]), (f_train_domain_range_y[1])]).range([height, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+
+                SVG.select("#axis--x").transition(t).call(xAxis);
+                SVG.select("#axis--y").transition(t).call(yAxis);
+
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            var keys = Array.from(target_names)
+
+            trainTargetGroup0 = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTraindata0.map(function (d, i) {
+                        if (grpName == samplingTraindata0[i]['target']) {
+                            return { r0: d.r0, r1: d.r1, target: d.target };
+                        }
+                    })
+                }
+            });
+
+            SVG.append("g")
+                .selectAll("legend_circle")
+                .data(trainTargetGroup0)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    // is the element currently visible ?
+                    currentOpacity = d3.selectAll(".dot00" + d.name).style("opacity")
+                    // Change the opacity: from 0 to 1 or from 1 to 0
+                    d3.selectAll(".dot00" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG
+                .selectAll("legend_tag")
+                .data(trainTargetGroup0)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot00" + d.name).style("opacity")
+                    d3.selectAll(".dot00" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+        })
+    </script>
+
+    {#  임베딩 된 테스트 데이터의 시각화  #}
+    <script class="a2">
+        // 테스트 데이터 임베딩
+        var margin2 = {top: 10, right: 30, bottom: 40, left: 50},
+            width2 = 800 - margin2.left - margin2.right,
+            height2 = 800 - margin2.top - margin2.bottom;
+
+        var SVG2 = d3.select("#area2")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width2 + margin2.left + margin2.right)
+            .attr("height", height2 + margin2.top + margin2.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin2.left + "," + margin2.top + ")")
+
+        SVG2
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height2)
+            .attr("width", width2)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var f_test_domain_range_x = new Array;
+        var f_test_domain_range_y = new Array;
+        var testDataGroup0;
+        var samplingTestdata0 = new Array;
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_visualization_test", function(data) {
+
+            f_test_domain_range_x.push(d3.min(data, function(d) { return parseFloat(d.r0) }) - 1);
+            f_test_domain_range_x.push(d3.max(data, function(d) { return parseFloat(d.r0) }) + 1);
+            f_test_domain_range_y.push(d3.min(data, function(d) { return parseFloat(d.r1) }) - 1);
+            f_test_domain_range_y.push(d3.max(data, function(d) { return parseFloat(d.r1) }) + 1);
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['target'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            for(var i = 0; i < target_names.length * 500; i++) {
+                samplingTestdata0.push(data[i]);
+            }
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(f_test_domain_range_x[0]), (f_test_domain_range_x[1])])
+                .range([0, width2])
+                .nice()
+
+            SVG2.append("g")
+                .attr("transform", "translate(0," + height2 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(f_test_domain_range_y[0]), (f_test_domain_range_y[1])])
+                .range([height2, 0])
+                .nice()
+
+            SVG2.append("g")
+                .call(d3.axisLeft(y))
+
+            // Add X axis label:
+            SVG2.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width2)
+                .attr("y", height2 + margin2.top + 30)
+                .text("dimension 0")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG2.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin2.left+10)
+                .attr("x", -margin2.top)
+                .text("dimension 1")
+                .style("fill", "black")
+
+            // Customization
+            SVG2.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG2.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 0.2).style("font-size", 13)
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG2.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width2)
+                .attr("height", height2)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height2 / width2);
+
+            var brush = d3.brush().extent([[0, 0], [width2, height2]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG2.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area2").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.target);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 100 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot01")
+                .data(samplingTestdata0)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot01" + d.target } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.target})
+                .style("fill", function (d) { return color(d.target) } )
+                .on("mouseover", tipMouseover )
+                .on("mouseout", tipMouseout )
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(f_test_domain_range_x[0]), (f_test_domain_range_x[1])]).range([0, width2]).nice()
+                    y.domain([(f_test_domain_range_y[0]), (f_test_domain_range_y[1])]).range([height2, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+
+                SVG2.select("#axis--x").transition(t).call(xAxis);
+                SVG2.select("#axis--y").transition(t).call(yAxis);
+
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            var keys = Array.from(target_names)
+
+            testTargetGroup0 = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTestdata0.map(function (d, i) {
+                        if (grpName == samplingTestdata0[i]['target']) {
+                            return { r0: d.r0, r1: d.r1, target: d.target };
+                        }
+                    })
+                }
+            });
+
+            SVG2.append("g")
+                .selectAll("legend_circle")
+                .data(testTargetGroup0)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin2.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot01" + d.name).style("opacity")
+                    d3.selectAll(".dot01" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG2
+                .selectAll("legend_tag")
+                .data(testTargetGroup0)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin2.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot01" + d.name).style("opacity")
+                    d3.selectAll(".dot01" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  임베딩 및 머신러닝 전의 훈련 데이터의 평가 지표  #}
+    <script class="b">
+        var margin3 = {top: 10, right: 30, bottom: 40, left: 50},
+            width3 = 450 - margin3.left - margin3.right,
+            height3 = 450 - margin3.top - margin3.bottom;
+
+        var svg3 = d3.select("#area3")
+            .append("svg")
+            .attr("width", width3 + margin3.left + margin3.right)
+            .attr("height", height + margin3.top + margin3.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin3.left + "," + margin3.top + ")");
+
+        d3.csv("http://127.0.0.1:8080/metrics_score_train", function(data) {
+
+            var x = d3.scaleBand()
+                .range([0, width3])
+                .domain(data.map(function(d) { return d.Metrics; }))
+                .padding(0.2);
+
+            svg3.append("g")
+                .attr("transform", "translate(0," + height3 + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(15, 0)")
+                .style("text-anchor", "end")
+                .style("text-align", "center")
+                .style("font-size", "14px")
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var y = d3.scaleLinear()
+                .domain([0, 1.0])
+                .range([height3, 0])
+
+            svg3.append("g")
+                .call(d3.axisLeft(y))
+                .selectAll("text")
+                .style("fill", "rgba(90,255,218,0.79)" )
+                .style("font-size", "14px")
+
+            var color = d3.scaleOrdinal()
+                .range([`#dc6750`, `#baf953`, `#91dc84`, `#31b2dc`])
+
+            var mouseover = function(d) {
+                d3.select(this)
+                .style("stroke", "white")
+                .style("stroke-width", 2)
+                .style("opacity", 1)
+            }
+
+            var mouseleave = function(d) {
+                d3.select(this)
+                    .style("stroke", "none")
+                    .style("opacity", 0.8)
+            }
+
+            svg3.selectAll("mybar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("x", function(d) { return x(d.Metrics); })
+                .attr("width", x.bandwidth())
+                .attr("fill", "#69b3a2")
+                .attr("height", function(d) { return height3 - y(0); })
+                .attr("y", function(d) { return y(0); })
+                .on("mouseover", mouseover)
+                .on("mouseleave", mouseleave)
+
+            svg3.selectAll("text")
+                .data(data, function (d) { return d})
+                .enter()
+                .append("text")
+                .text(function (d) {return d.Score;})
+                .attr("x", function(d) { return x(d.Metrics) + 30;})
+                .attr("y", function(d) { return y(d.Score) - 5;})
+                .style("text-anchor", "middle")
+                .style("font-size", "13px")
+                .style("fill", "white")
+
+
+            svg3.selectAll("rect")
+                .transition() // animation
+                .duration(700)
+                .attr("y", function(d) { return y(d.Score); })
+                .attr("height", function(d) { return height3 - y(d.Score); })
+                .attr("width", x.bandwidth())
+                .attr("fill", function(d) { return color(d.Metrics); })
+                .attr("stroke", "grey")
+
+
+        })
+
+        var margin4 = {top: 10, right: 30, bottom: 40, left: 50},
+            width4 = 450 - margin4.left - margin4.right,
+            height4 = 450 - margin4.top - margin4.bottom;
+
+        var svg4 = d3.select("#area4")
+            .append("svg")
+            .attr("width", width4 + margin4.left + margin4.right)
+            .attr("height", height4 + margin4.top + margin4.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin4.left + "," + margin4.top + ")");
+
+        d3.csv("http://127.0.0.1:8080/metrics_score_test", function(data) {
+
+            var x = d3.scaleBand()
+                .range([0, width4])
+                .domain(data.map(function (d) {
+                    return d.Metrics;
+                }))
+                .padding(0.2);
+
+            svg4.append("g")
+                .attr("transform", "translate(0," + height4 + ")")
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(15, 0)")
+                .style("text-anchor", "end")
+                .style("text-align", "center")
+                .style("font-size", "14px")
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var y = d3.scaleLinear()
+                .domain([0, 1.0])
+                .range([height4, 0]);
+
+            svg4.append("g")
+                .call(d3.axisLeft(y))
+                .selectAll("text")
+                .style("font-size", "14px")
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var color = d3.scaleOrdinal()
+                .range([`#dc6750`, `#baf953`, `#91dc84`, `#31b2dc`])
+
+            var mouseover = function (d) {
+                d3.select(this)
+                    .style("stroke", "white")
+                    .style("stroke-width", 2)
+                    .style("opacity", 1)
+            }
+
+            var mouseleave = function (d) {
+                d3.select(this)
+                    .style("stroke", "none")
+                    .style("opacity", 0.8)
+            }
+
+            svg4.selectAll("mybar")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("x", function(d) { return x(d.Metrics); })
+                .attr("width", x.bandwidth())
+                .attr("fill", "#69b3a2")
+                .attr("height", function(d) { return height4 - y(0); })
+                .attr("y", function(d) { return y(0); })
+                .on("mouseover", mouseover)
+                .on("mouseleave", mouseleave)
+
+            svg4.selectAll("text")
+                .data(data, function (d) { return d})
+                .enter()
+                .append("text")
+                .text(function (d) {return d.Score;})
+                .attr("x", function(d) { return x(d.Metrics) + 30;})
+                .attr("y", function(d) { return y(d.Score) - 5;})
+                .style("text-anchor", "middle")
+                .style("font-size", "13px")
+                .style("fill", "white")
+
+            svg4.selectAll("rect")
+                .transition() // animation
+                .duration(700)
+                .attr("y", function(d) { return y(d.Score); })
+                .attr("height", function(d) { return height4 - y(d.Score); })
+                .attr("width", x.bandwidth())
+                .attr("fill", function(d) { return color(d.Metrics); })
+                .attr("stroke", "grey")
+        })
+    </script>
+
+    {#  임베딩 및 머신러닝 전의 훈련 데이터의 오차행렬  #}
+    <script class="c">
+        var margin5 = {top: 10, right: 30, bottom: 40, left: 50},
+            width5 = 450 - margin5.left - margin5.right,
+            height5 = 450 - margin5.top - margin5.bottom;
+
+        var svg5 = d3.select("#area5")
+            .append("svg")
+            .attr("width", width5 + margin5.left + margin5.right)
+            .attr("height", height5 + margin5.top + margin5.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin5.left + "," + margin5.top + ")");
+
+        d3.csv("http://127.0.0.1:8080/confusion_matrix_train", function(data) {
+
+            var myGroups = d3.map(data, function(d){return d.group;}).keys()
+            var myVars = d3.map(data, function(d){return d.variable;}).keys()
+
+            var myColor = d3.scaleSequential()
+                .interpolator(d3.interpolateCool)
+                .domain([1, 1000])
+
+            var x = d3.scaleBand()
+                .range([0, width4])
+                .domain(myGroups)
+                .padding(0.05);
+
+            svg5.append("g")
+                .call(d3.axisBottom(x).tickSize(0))
+                .call(g => g.select(".domain").remove())
+                .attr("transform", "translate(0," + height5 + ")")
+                .selectAll("text")
+                .attr("transform", "translate(0, 2)")
+                .style("font-size", 15)
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var y = d3.scaleBand()
+                .range([height5, 0])
+                .domain(myVars)
+                .padding(0.05);
+
+            svg5.append("g")
+                .call(d3.axisLeft(y).tickSize(0))
+                .call(g => g.select(".domain").remove())
+                .selectAll("text")
+                .style("font-size", 15)
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var mouseover = function(d) {
+                d3.select(this)
+                .style("stroke", "white")
+                .style("opacity", 1)
+            }
+
+            var mouseleave = function(d) {
+                d3.select(this)
+                .style("stroke", "none")
+                .style("opacity", 0.8)
+            }
+
+            svg5.selectAll()
+                .data(data, function (d) {return d.group+':'+d.variable;})
+                .enter()
+                .append("rect")
+                .attr("x", function (d) { return x(d.group) })
+                .attr("y", function (d) { return y(d.variable) })
+                .attr("rx", 4)
+                .attr("ry", 4)
+                .attr("width", x.bandwidth() )
+                .attr("height", y.bandwidth() )
+                .style("fill", function(d) { return myColor(d.value)} )
+                .style("stroke-width", 4)
+                .style("stroke", "none")
+                .style("opacity", 0.8)
+                .on("mouseover", mouseover)
+                .on("mouseleave", mouseleave)
+
+            svg5.selectAll("text")
+                .data(data, function(d) { return d})
+                .enter()
+                .append("text")
+                .text(function(d) {return d.value;})
+                .attr("x", function(d) { return x(d.group) + 30 })
+                .attr("y", function(d) { return y(d.variable) + 35 })
+                .style("text-align", "center")
+                .style("text-anchor", "middle")
+
+            xlabel = ['pred']
+            svg5.selectAll("text")
+                .data(xlabel, function(d) { return d})
+                .enter().append("text")
+                .text(function(d) { return d; })
+                .attr("x", width5 / 2 - 25)
+                .attr("y", height5 + 35)
+                .style("fill", "rgba(90,255,218,0.79)" )
+                .style("font-size", "18px")
+                .style("stroke", "blue")
+                .style("stroke-width", 0.5)
+
+            ylabel = ['true']
+            svg5.selectAll("text")
+                .data(ylabel, function(d) { return d})
+                .enter().append("text")
+                .text(function(d) { return d; })
+                .attr("x", 0 - 50)
+                .attr("y", height5 - 200)
+                .style("fill", "rgba(90,255,218,0.79)" )
+                .style("font-size", "18px")
+                .style("stroke", "blue")
+                .style("stroke-width", 0.5)
+
+        })
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //  임베딩 및 머신러닝 후의 데이터의 오차행렬
+        var margin6 = {top: 10, right: 30, bottom: 40, left: 50},
+            width6 = 450 - margin6.left - margin6.right,
+            height6 = 450 - margin6.top - margin6.bottom;
+
+        var svg6 = d3.select("#area6")
+            .append("svg")
+            .attr("width", width6 + margin4.left + margin6.right)
+            .attr("height", height6 + margin6.top + margin6.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin6.left + "," + margin6.top + ")");
+
+        d3.csv("http://127.0.0.1:8080/confusion_matrix_test", function(data) {
+
+            var myGroups = d3.map(data, function(d){return d.group;}).keys()
+            var myVars = d3.map(data, function(d){return d.variable;}).keys()
+
+            var x = d3.scaleBand()
+                .range([0, width6])
+                .domain(myGroups)
+                .padding(0.05);
+
+            svg6.append("g")
+                .call(d3.axisBottom(x).tickSize(0))
+                .call(g => g.select(".domain").remove())
+                .attr("transform", "translate(0," + height6 + ")")
+                .selectAll("text")
+                .attr("transform", "translate(0, 2)")
+                .style("font-size", 15)
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var y = d3.scaleBand()
+                .range([height6, 0])
+                .domain(myVars)
+                .padding(0.05);
+
+            svg6.append("g")
+                .call(d3.axisLeft(y).tickSize(0))
+                .call(g => g.select(".domain").remove())
+                .selectAll("text")
+                .style("font-size", 15)
+                .style("fill", "rgba(90,255,218,0.79)" )
+
+            var myColor = d3.scaleSequential()
+                .interpolator(d3.interpolateCool)
+                .domain([1, 1000])
+
+            var mouseover = function(d) {
+                d3.select(this)
+                .style("stroke", "white")
+                .style("opacity", 1)
+            }
+
+            var mouseleave = function(d) {
+                d3.select(this)
+                    .style("stroke", "none")
+                    .style("opacity", 0.8)
+            }
+
+            svg6.selectAll()
+                .data(data, function(d) {return d.group+':'+d.variable;})
+                .enter()
+                .append("rect")
+                .attr("x", function(d) { return x(d.group) })
+                .attr("y", function(d) { return y(d.variable) })
+                .attr("rx", 4)
+                .attr("ry", 4)
+                .attr("width", x.bandwidth() )
+                .attr("height", y.bandwidth() )
+                .style("fill", function(d) { return myColor(d.value)} )
+                .style("stroke-width", 4)
+                .style("stroke", "none")
+                .style("opacity", 0.8)
+                .on("mouseover", mouseover)
+                .on("mouseleave", mouseleave)
+
+            svg6.selectAll("text")
+                .data(data, function (d) { return d})
+                .enter()
+                .append("text")
+                .text(function (d) {return d.value;})
+                .attr("x", function(d) { return x(d.group) + 30 })
+                .attr("y", function(d) { return y(d.variable) + 35 })
+                .style("text-align", "center")
+                .style("text-anchor", "middle")
+
+            xlabel = ['pred']
+            svg6.selectAll("text")
+                .data(xlabel, function(d) { return d})
+                .enter().append("text")
+                .text(function(d) { return d; })
+                .attr("x", width5 / 2 - 20)
+                .attr("y", height5 + 35)
+                .style("fill", "rgba(90,255,218,0.79)" )
+                .style("font-size", "18px")
+                .style("stroke", "blue")
+                .style("stroke-width", 0.5)
+
+            ylabel = ['true']
+            svg6.selectAll("text")
+                .data(ylabel, function(d) { return d})
+                .enter().append("text")
+                .text(function(d) { return d; })
+                .attr("x", 0 - 50)
+                .attr("y", height5 - 190)
+                .style("fill", "rgba(90,255,218,0.79)" )
+                .style("font-size", "18px")
+                .style("stroke", "blue")
+                .style("stroke-width", 0.5)
+        })
+    </script>
+
+    {#  임베딩 방식 분포도(훈련)  #}
+    <script class="d">
+        var margin7 = {top: 10, right: 30, bottom: 40, left: 50},
+            width7 = 800 - margin7.left - margin7.right,
+            height7 = 800 - margin7.top - margin7.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG7 = d3.select("#area7")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width7 + margin7.left + margin7.right)
+            .attr("height", height7 + margin7.top + margin7.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin7.left + "," + margin7.top + ")")
+
+        // Add the black box around the chart
+        SVG7
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height7)
+            .attr("width", width7)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var domain_train_range_x = new Array;
+        var domain_train_range_y = new Array;
+        var trainTargetGroup;
+        var samplingTraindata1 = new Array;
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_train", function(data) {
+
+            domain_train_range_x.push(d3.min(data, function(d) { return parseFloat(d.r0) }) - 1);
+            domain_train_range_x.push(d3.max(data, function(d) { return parseFloat(d.r0) }) + 1);
+            domain_train_range_y.push(d3.min(data, function(d) { return parseFloat(d.r1) }) - 1);
+            domain_train_range_y.push(d3.max(data, function(d) { return parseFloat(d.r1) }) + 1);
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['target'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            for (var i = 0; i < target_names.length * 1000; i++) {
+                samplingTraindata1.push(data[i]);
+            }
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([domain_train_range_x[0], domain_train_range_x[1]])
+                .range([0, width7])
+                .nice()
+
+            SVG7.append("g")
+                .attr("transform", "translate(0," + height7 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([domain_train_range_y[0], domain_train_range_y[1]])
+                .range([height7, 0])
+                .nice()
+
+            SVG7.append("g")
+                .call(d3.axisLeft(y))
+
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG7.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width7)
+                .attr("height", height7)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height7 / width7);
+
+            var brush = d3.brush().extent([[0, 0], [width7, height7]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG7.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area7").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.target);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 300 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot1")
+                .data(samplingTraindata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot1" + d.target } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.target})
+                .style("fill", function (d) { return color(d.target) } )
+                .on("mouseover", tipMouseover)
+                .on("mouseout", tipMouseout)
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([domain_train_range_x[0], domain_train_range_x[1]]).range([0, width7]).nice()
+                    y.domain([domain_train_range_y[0], domain_train_range_y[1]]).range([height7, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+
+                SVG7.select("#axis--x").transition(t).call(xAxis);
+                SVG7.select("#axis--y").transition(t).call(yAxis);
+
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            // Add X axis label:
+            SVG7.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width7)
+                .attr("y", height7 + margin7.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG7.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin7.left + 10)
+                .attr("x", -margin7.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG7.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG7.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            var keys = Array.from(target_names);
+
+            trainTargetGroup = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTraindata1.map(function (d, i) {
+                        if (grpName == samplingTraindata1[i]['target']) {
+                            return { r0: d.r0, r1: d.r1, target: d.target };
+                        }
+                    })
+                }
+            });
+
+            SVG7.append("g")
+                .selectAll("legend_circle")
+                .data(trainTargetGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin7.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    // is the element currently visible ?
+                    currentOpacity = d3.selectAll(".dot1" + d.name).style("opacity")
+                    // Change the opacity: from 0 to 1 or from 1 to 0
+                    d3.selectAll(".dot1" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG7
+                .selectAll("legend_tag")
+                .data(trainTargetGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin7.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot1" + d.name).style("opacity")
+                    d3.selectAll(".dot1" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  임베딩 방식 분포도(테스트)  #}
+    <script class="e">
+        var margin8 = {top: 10, right: 30, bottom: 40, left: 50},
+            width8 = 800 - margin8.left - margin8.right,
+            height8 = 800 - margin8.top - margin8.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG8 = d3.select("#area8")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width8 + margin8.left + margin8.right)
+            .attr("height", height8+ margin8.top + margin8.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin8.left + "," + margin8.top + ")")
+
+        // Add the black box around the chart
+        SVG8
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height8)
+            .attr("width", width8)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var domain_test_range_x = new Array;
+        var domain_test_range_y = new Array;
+        var testDataGroup;
+        var samplingTestdata1 = new Array;
+
+        //Read the data
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_test", function(data) {
+
+            domain_test_range_x.push(d3.min(data, function(d) { return parseFloat(d.r0) }) - 1);
+            domain_test_range_x.push(d3.max(data, function(d) { return parseFloat(d.r0) }) + 1);
+            domain_test_range_y.push(d3.min(data, function(d) { return parseFloat(d.r1) }) - 1);
+            domain_test_range_y.push(d3.max(data, function(d) { return parseFloat(d.r1) }) + 1);
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['target'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            for(var i = 0; i < target_names.length * 500; i++) {
+                samplingTestdata1.push(data[i]);
+            }
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([domain_test_range_x[0], domain_test_range_x[1]])
+                .range([0, width8])
+                .nice()
+
+            SVG8.append("g")
+                .attr("transform", "translate(0," + height8 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([domain_test_range_y[0], domain_test_range_y[1]])
+                .range([height8, 0])
+                .nice()
+
+            SVG8.append("g")
+                .call(d3.axisLeft(y))
+
+            // Add X axis label:
+            SVG8.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width8)
+                .attr("y", height8 + margin8.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG8.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin8.left+10)
+                .attr("x", -margin8.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG8.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG8.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG8.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width8)
+                .attr("height", height8)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height8 / width8);
+
+            var brush = d3.brush().extent([[0, 0], [width8, height8]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG8.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area8").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.target);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 300 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot2")
+                .data(samplingTestdata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot2" + d.target } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.target})
+                .style("fill", function (d) { return color(d.target) } )
+                .on("mouseover", tipMouseover)
+                .on("mouseout", tipMouseout)
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([domain_test_range_x[0], domain_test_range_x[1]]).range([0, width8]).nice()
+                    y.domain([domain_test_range_y[0], domain_test_range_y[1]]).range([height8, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+
+                SVG8.select("#axis--x").transition(t).call(xAxis);
+                SVG8.select("#axis--y").transition(t).call(yAxis);
+
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            var keys = Array.from(target_names)
+
+            testTargetGroup = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTestdata1.map(function (d, i) {
+                        if (grpName == samplingTestdata1[i]['target']) {
+                            return { r0: d.r0, r1: d.r1, target: d.target };
+                        }
+                    })
+                }
+            });
+
+            SVG8.append("g")
+                .selectAll("legend_circle")
+                .data(testTargetGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin8.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot2" + d.name).style("opacity")
+                    d3.selectAll(".dot2" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG8
+                .selectAll("legend_tag")
+                .data(testTargetGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin8.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot2" + d.name).style("opacity")
+                    d3.selectAll(".dot2" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  분류 모델 예측 분포도(훈련)  #}
+    <script class="f">
+        var margin9 = {top: 10, right: 30, bottom: 40, left: 50},
+            width9 = 800 - margin9.left - margin9.right,
+            height9 = 800 - margin9.top - margin9.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG9 = d3.select("#area9")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width9 + margin9.left + margin9.right)
+            .attr("height", height9 + margin9.top + margin9.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin9.left + "," + margin9.top + ")")
+
+        // Add the black box around the chart
+        SVG9
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height9)
+            .attr("width", width9)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var trainPredGroup;
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_train", function(data) {
+
+                // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(domain_train_range_x[0]), (domain_train_range_x[1])])
+                .range([0, width9])
+                .nice()
+
+            SVG9.append("g")
+                .attr("transform", "translate(0," + height9 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(domain_train_range_y[0]), (domain_train_range_y[1])])
+                .range([height9, 0])
+                .nice()
+
+            SVG9.append("g")
+                .call(d3.axisLeft(y))
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['pred'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG9.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width9)
+                .attr("height", height9)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height9 / width9);
+
+            var brush = d3.brush().extent([[0, 0], [width9, height9]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG9.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area9").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.pred);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 300 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot3")
+                .data(samplingTraindata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot3" + d.pred } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.pred})
+                .style("fill", function (d) { return color(d.pred) } )
+                .on("mouseover", tipMouseover)
+                .on("mouseout", tipMouseout)
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(domain_train_range_x[0]), (domain_train_range_x[1])]).range([0, width9]).nice()
+                    y.domain([(domain_train_range_y[0]), (domain_train_range_y[1])]).range([height9, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+                SVG9.select("#axis--x").transition(t).call(xAxis);
+                SVG9.select("#axis--y").transition(t).call(yAxis);
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            // Add X axis label:
+            SVG9.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width9)
+                .attr("y", height9 + margin9.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG9.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin9.left + 10)
+                .attr("x", -margin9.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG9.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG9.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            var keys = Array.from(target_names)
+
+            trainPredGroup = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTraindata1.map(function (d, i) {
+                        if (grpName == samplingTraindata1[i]['pred']) {
+                            return { r0: d.r0, r1: d.r1, pred: d.pred };
+                        }
+                    })
+                }
+            });
+
+            SVG9.append("g")
+                .selectAll("legend_circle")
+                .data(trainPredGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin9.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot3" + d.name).style("opacity")
+                    d3.selectAll(".dot3" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG9
+                .selectAll("legend_tag")
+                .data(trainPredGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin9.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot3" + d.name).style("opacity")
+                    d3.selectAll(".dot3" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  분류 모델 예측 분포도(테스트)  #}
+    <script class="g">
+        var margin10 = {top: 10, right: 30, bottom: 40, left: 50},
+            width10 = 800 - margin10.left - margin10.right,
+            height10 = 800 - margin10.top - margin10.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG10 = d3.select("#area10")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width10 + margin10.left + margin10.right)
+            .attr("height", height10 + margin10.top + margin10.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin10.left + "," + margin10.top + ")")
+
+        // Add the black box around the chart
+        SVG10
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height10)
+            .attr("width", width10)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var testPredGroup;
+
+        //Read the data
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_test", function(data) {
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(domain_test_range_x[0]), (domain_test_range_x[1])])
+                .range([0, width10])
+                .nice()
+
+            SVG10.append("g")
+                .attr("transform", "translate(0," + height10 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(domain_test_range_y[0]), (domain_test_range_y[1])])
+                .range([height10, 0])
+                .nice()
+
+            SVG10.append("g")
+                .call(d3.axisLeft(y))
+
+            // Add X axis label:
+            SVG10.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width10)
+                .attr("y", height10 + margin10.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG10.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin10.left+10)
+                .attr("x", -margin10.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG10.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG10.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['pred'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG10.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width10)
+                .attr("height", height10)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height10 / width10);
+
+            var brush = d3.brush().extent([[0, 0], [width10, height10]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG10.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area10").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.pred);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 300 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot4")
+                .data(samplingTestdata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot4" + d.pred } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.pred})
+                .style("fill", function (d) { return color(d.pred) } )
+                .on("mouseover", tipMouseover)
+                .on("mouseout", tipMouseout)
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(domain_test_range_x[0]), (domain_test_range_x[1])]).range([0, width10]).nice()
+                    y.domain([(domain_test_range_y[0]), (domain_test_range_y[1])]).range([height10, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+
+                SVG10.select("#axis--x").transition(t).call(xAxis);
+                SVG10.select("#axis--y").transition(t).call(yAxis);
+
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            var keys = Array.from(target_names)
+
+            testPredGroup = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTestdata1.map(function (d, i) {
+                        if (grpName == samplingTestdata1[i]['pred']) {
+                            return { r0: d.r0, r1: d.r1, pred: d.pred };
+                        }
+                    })
+                }
+            });
+
+            SVG10.append("g")
+                .selectAll("legend_circle")
+                .data(testPredGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin10.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot4" + d.name).style("opacity")
+                    d3.selectAll(".dot4" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG10
+                .selectAll("legend_tag")
+                .data(testPredGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin10.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot4" + d.name).style("opacity")
+                    d3.selectAll(".dot4" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  예측 결과(훈련)  #}
+    <script class="h">
+        var margin11 = {top: 10, right: 30, bottom: 40, left: 50},
+            width11 = 800 - margin11.left - margin11.right,
+            height11 = 800 - margin11.top - margin11.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG11 = d3.select("#area11")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width11 + margin11.left + margin11.right)
+            .attr("height", height11 + margin11.top + margin11.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin11.left + "," + margin11.top + ")")
+
+        // Add the black box around the chart
+        SVG11
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height11)
+            .attr("width", width11)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var trainSuccessGroup;
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_train", function(data) {
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(domain_train_range_x[0]), (domain_train_range_x[1])])
+                .range([0, width11])
+                .nice()
+
+            SVG11.append("g")
+                .attr("transform", "translate(0," + height11 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(domain_train_range_y[0]), (domain_train_range_y[1])])
+                .range([height11, 0])
+                .nice()
+
+            SVG11.append("g")
+                .call(d3.axisLeft(y))
+
+            var target_names = ["실패", "성공"];
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range([`#ff0000`, `#0000dc`])
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG11.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width11)
+                .attr("height", height11)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height11 / width11);
+
+            var brush = d3.brush().extent([[0, 0], [width11, height11]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG11.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot5")
+                .data(samplingTraindata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot5" + d.success } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.success})
+                .style("fill", function (d) { return color(d.success) } )
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(domain_train_range_x[0]), (domain_train_range_x[1])]).range([0, width11]).nice()
+                    y.domain([(domain_train_range_y[0]), (domain_train_range_y[1])]).range([height11, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+                SVG11.select("#axis--x").transition(t).call(xAxis);
+                SVG11.select("#axis--y").transition(t).call(yAxis);
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            // Add X axis label:
+            SVG11.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width11)
+                .attr("y", height11 + margin11.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG11.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin11.left + 10)
+                .attr("x", -margin11.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG11.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG11.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            var keys = ["실패", "성공"];
+
+            trainSuccessGroup = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTraindata1.map(function (d, i) {
+                        if (grpName == samplingTraindata1[i]['success']) {
+                            return { r0: d.r0, r1: d.r1, success: d.success };
+                        }
+                    })
+                }
+            });
+
+            SVG11.append("g")
+                .selectAll("legend_circle")
+                .data(trainSuccessGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin11.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    // is the element currently visible ?
+                    currentOpacity = d3.selectAll(".dot5" + d.name).style("opacity")
+                    // Change the opacity: from 0 to 1 or from 1 to 0
+                    d3.selectAll(".dot5" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG11
+                .selectAll("legend_tag")
+                .data(trainSuccessGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin11.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot5" + d.name).style("opacity")
+                    d3.selectAll(".dot5" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  예측 결과(테스트)  #}
+    <script class="i">
+        var margin12 = {top: 10, right: 30, bottom: 40, left: 50},
+            width12 = 800 - margin12.left - margin12.right,
+            height12 = 800 - margin12.top - margin12.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG12 = d3.select("#area12")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width12 + margin12.left + margin12.right)
+            .attr("height", height12 + margin12.top + margin12.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin12.left + "," + margin12.top + ")")
+
+        // Add the black box around the chart
+        SVG12
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height12)
+            .attr("width", width12)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        var testSuccessGroup;
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_test", function(data) {
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(domain_test_range_x[0]), (domain_test_range_x[1])])
+                .range([0, width12])
+                .nice()
+
+            SVG12.append("g")
+                .attr("transform", "translate(0," + height12 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(domain_test_range_y[0]), (domain_test_range_y[1])])
+                .range([height12, 0])
+                .nice()
+
+            SVG12.append("g")
+                .call(d3.axisLeft(y))
+
+            var target_names = ["실패", "성공"]
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range([`#ff0000`, `#0000dc`])
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG12.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width12)
+                .attr("height", height12)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height12 / width12);
+
+            var brush = d3.brush().extent([[0, 0], [width12, height12]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG12.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot6")
+                .data(samplingTestdata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot6" + d.success } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.success})
+                .style("fill", function (d) { return color(d.success) } )
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(domain_test_range_x[0]), (domain_test_range_x[1])]).range([0, width12]).nice()
+                    y.domain([(domain_test_range_y[0]), (domain_test_range_y[1])]).range([height12, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+                SVG12.select("#axis--x").transition(t).call(xAxis);
+                SVG12.select("#axis--y").transition(t).call(yAxis);
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            // Add X axis label:
+            SVG12.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width12)
+                .attr("y", height12 + margin12.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG12.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin12.left + 10)
+                .attr("x", -margin12.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG12.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG12.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            var keys = ["실패", "성공"];
+
+            testSuccessGroup = keys.map(function (grpName) {
+                return {
+                    name: grpName,
+                    values: samplingTestdata1.map(function (d, i) {
+                        if (grpName == samplingTestdata1[i]['success']) {
+                            return { r0: d.r0, r1: d.r1, success: d.success };
+                        }
+                    })
+                }
+            });
+
+            SVG12.append("g")
+                .selectAll("legend_circle")
+                .data(testSuccessGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin12.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    // is the element currently visible ?
+                    currentOpacity = d3.selectAll(".dot6" + d.name).style("opacity")
+                    // Change the opacity: from 0 to 1 or from 1 to 0
+                    d3.selectAll(".dot6" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG12
+                .selectAll("legend_tag")
+                .data(testSuccessGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin12.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot6" + d.name).style("opacity")
+                    d3.selectAll(".dot6" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  틀린 결과 분포도(훈련)  #}
+    <script class="j">
+        var margin13 = {top: 10, right: 30, bottom: 40, left: 50},
+            width13 = 800 - margin13.left - margin13.right,
+            height13 = 800 - margin13.top - margin13.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG13 = d3.select("#area13")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width13 + margin13.left + margin13.right)
+            .attr("height", height13 + margin13.top + margin13.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin13.left + "," + margin13.top + ")")
+
+        // Add the black box around the chart
+        SVG13
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height13)
+            .attr("width", width13)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_train", function(data) {
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(domain_train_range_x[0]), (domain_train_range_x[1])])
+                .range([0, width13])
+                .nice()
+
+            SVG13.append("g")
+                .attr("transform", "translate(0," + height13 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(domain_train_range_y[0]), (domain_train_range_y[1])])
+                .range([height13, 0])
+                .nice()
+
+            SVG13.append("g")
+                .call(d3.axisLeft(y))
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['target'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            var color2 = d3.scaleOrdinal()
+                .domain(target_names)
+                .range([`rgba(0,255,169,0)`])
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG13.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width13)
+                .attr("height", height13)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height13 / width13);
+
+            var brush = d3.brush().extent([[0, 0], [width13, height13]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG13.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area13").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.target);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 300 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot7")
+                .data(samplingTraindata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot7" + d.target } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.target } )
+                .style("fill", function (d) { if (d.success == '실패') return color(d.target); else return color2(d.target) } )
+                .on("mouseover", tipMouseover)
+                .on("mouseout", tipMouseout)
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(domain_train_range_x[0]), (domain_train_range_x[1])]).range([0, width13]).nice()
+                    y.domain([(domain_train_range_y[0]), (domain_train_range_y[1])]).range([height13, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+                SVG13.select("#axis--x").transition(t).call(xAxis);
+                SVG13.select("#axis--y").transition(t).call(yAxis);
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            // Add X axis label:
+            SVG13.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width13)
+                .attr("y", height13 + margin13.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG13.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin13.left + 10)
+                .attr("x", -margin13.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG13.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG13.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+
+            SVG13.append("g")
+                .selectAll("legend_circle")
+                .data(trainTargetGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin13.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    // is the element currently visible ?
+                    currentOpacity = d3.selectAll(".dot7" + d.name).style("opacity")
+                    // Change the opacity: from 0 to 1 or from 1 to 0
+                    d3.selectAll(".dot7" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG13
+                .selectAll("legend_tag")
+                .data(trainTargetGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin13.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot7" + d.name).style("opacity")
+                    d3.selectAll(".dot7" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+
+    {#  틀린 결과 분포도(테스트)  #}
+    <script class="k">
+        var margin14 = {top: 10, right: 30, bottom: 40, left: 50},
+            width14 = 800 - margin14.left - margin14.right,
+            height14 = 800 - margin14.top - margin14.bottom;
+
+        // append the SVg object to the body of the page
+        var SVG14 = d3.select("#area14")
+            .style("background-color", "none")
+            .append("svg")
+            .attr("width", width14 + margin14.left + margin14.right)
+            .attr("height", height14 + margin14.top + margin14.bottom)
+            .append("g")
+            .attr("transform",
+            "translate(" + margin14.left + "," + margin14.top + ")")
+
+        // Add the black box around the chart
+        SVG14
+            .append("rect")
+            .attr("x",0)
+            .attr("y",0)
+            .attr("height", height14)
+            .attr("width", width14)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", 2)
+            .style("opacity", 0.6)
+
+        d3.csv("http://127.0.0.1:8080/embedding_and_machinelearning_visualization_test", function(data) {
+
+            // Add X axis
+            var x = d3.scaleLinear()
+                .domain([(domain_test_range_x[0]), (domain_test_range_x[1])])
+                .range([0, width14])
+                .nice()
+
+            SVG14.append("g")
+                .attr("transform", "translate(0," + height14 + ")")
+                .call(d3.axisBottom(x))
+
+            // Add Y axis
+            var y = d3.scaleLinear()
+                .domain([(domain_test_range_y[0]), (domain_test_range_y[1])])
+                .range([height14, 0])
+                .nice()
+
+            SVG14.append("g")
+                .call(d3.axisLeft(y))
+
+            var target_names = new Set();
+
+            for (var i = 0; i < data.length; i++) {
+                target_names.add(data[i]['target'])
+            }
+            target_names = Array.from(target_names).sort();
+
+            var color = d3.scaleOrdinal()
+                .domain(target_names)
+                .range(d3.schemeSet1)
+
+            var color2 = d3.scaleOrdinal()
+                .domain(target_names)
+                .range([`rgba(0,255,169,0)`])
+
+            // 클립: 원이 SVG 그림판 밖으로 나가지 않도록
+            var clip = SVG14.append("defs").append("svg:clipPath")
+                .attr("id", "clip")
+                .append("svg:rect")
+                .attr("width", width14)
+                .attr("height", height14)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var xAxis = d3.axisBottom(x).ticks(12),
+                yAxis = d3.axisLeft(y).ticks(12 * height14 / width14);
+
+            var brush = d3.brush().extent([[0, 0], [width14, height14]]).on("end", brushended),
+                idleTimeout,
+                idleDelay = 350;
+
+            var scatter = SVG14.append("g")
+                 .attr("id", "scatterplot")
+                 .attr("clip-path", "url(#clip)");
+
+            var tooltip = d3.select("#area14").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+                .style("background-color", "black")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "5px")
+                .style("padding", "20px")
+
+            // tooltip mouseover event handler
+            var tipMouseover = function(d) {
+                var c = color(d.target);
+                var html  = "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r0) + "</span><br/>" +
+                         "<span style='color:" + c + ";'>" + d3.format(".4f")(d.r1);
+
+                tooltip.html(html)
+                    .style("left", width + 300 + "px")
+                    .style("top", height / 2 + "px")
+                    .style("font-size", "14px")
+                    .transition()
+                    .duration(200) // ms
+                    .style("opacity", .9) // started as 0!
+            };
+
+            // tooltip mouseout event handler
+            var tipMouseout = function(d) {
+                tooltip.transition()
+                    .duration(300) // ms
+                    .style("opacity", 0); // don't care about position!
+            };
+
+            scatter.append("g")
+                .attr("class", "brush")
+                .call(brush);
+
+            scatter.selectAll("dot8")
+                .data(samplingTestdata1)
+                .enter()
+                .append("circle")
+                .attr("class", function (d) { return "dot8" + d.target } )
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); })
+                .attr("r", 6)
+                .attr("data-legend",function(d) { return d.target})
+                .style("fill", function (d) { if (d.success == '실패') return color(d.target); else return color2(d.target) } )
+                .on("mouseover", tipMouseover)
+                .on("mouseout", tipMouseout)
+
+            function brushended() {
+
+                var s = d3.event.selection;
+
+                if (!s) {
+                    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+                    x.domain([(domain_test_range_x[0]), (domain_test_range_x[1])]).range([0, width14]).nice()
+                    y.domain([(domain_test_range_y[0]), (domain_test_range_y[1])]).range([height14, 0]).nice()
+                } else {
+                    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+                    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+                    scatter.select(".brush").call(brush.move, null);
+                }
+                zoom();
+            }
+
+            function idled() {
+                idleTimeout = null;
+            }
+
+            function zoom() {
+                var t = scatter.transition().duration(750);
+                SVG14.select("#axis--x").transition(t).call(xAxis);
+                SVG14.select("#axis--y").transition(t).call(yAxis);
+                scatter.selectAll("circle").transition(t)
+                .attr("cx", function (d) { return x(d.r0); })
+                .attr("cy", function (d) { return y(d.r1); });
+            }
+
+            // Add X axis label:
+            SVG14.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", width14)
+                .attr("y", height14 + margin14.top + 30)
+                .text("dimension 0")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Y axis label:
+            SVG14.append("text")
+                .attr("text-anchor", "end")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -margin14.left + 10)
+                .attr("x", -margin14.top)
+                .text("dimension 1")
+                .style("font-size", "15px")
+                .style("fill", "black")
+
+            // Customization
+            SVG14.selectAll(".tick line").attr("stroke", "black").style("stroke-width", 1)
+            SVG14.selectAll(".tick text").attr("stroke", "black").style("stroke-width", 1).style("font-size", 13)
+
+            SVG14.append("g")
+                .selectAll("legend_circle")
+                .data(testTargetGroup)
+                .enter()
+                .append("circle")
+                    .attr("cx", -margin14.left + 70)
+                    .attr("cy", function(d, i) { return 15 + i * 25 })
+                    .attr("r", 6)
+                    .style("fill", function(d) { return color(d.name) })
+                .on("click", function(d){
+                    // is the element currently visible ?
+                    currentOpacity = d3.selectAll(".dot8" + d.name).style("opacity")
+                    // Change the opacity: from 0 to 1 or from 1 to 0
+                    d3.selectAll(".dot8" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+
+            SVG14
+                .selectAll("legend_tag")
+                .data(testTargetGroup)
+                .enter()
+                .append('g')
+                .append("text")
+                .attr('x', -margin14.left + 80)
+                .attr('y', function(d, i) { return 16 + i * 25})
+                .text(function(d) { return d.name; })
+                .style("fill", function(d){ return color(d.name) })
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+                .style("font-size", 15)
+                .on("click", function(d){
+                    currentOpacity = d3.selectAll(".dot8" + d.name).style("opacity")
+                    d3.selectAll(".dot8" + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
+                })
+        })
+    </script>
+</body>
+</html>

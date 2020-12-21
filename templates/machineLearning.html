@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        데이터 시각화
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../static/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        row2 {
+            position: relative;
+        }
+        .column {
+            float: left;
+            width: 15%;
+            height: 40px;
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+            color: white;
+        }
+        .containerTab1 {
+            width: 60%;
+            text-align: center;
+            padding: 13px;
+            color: white;
+        }
+        .containerTab2 {
+            width: 75%;
+            text-align: center;
+            padding: 13px;
+            color: white;
+        }
+        input[type=text], select {
+            height: 50px;
+            width: 100px;
+            position: relative;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            height: 50px;
+            width: 100px;
+            position: relative;
+            background-color: #422f75;
+            color: white;
+            padding: 14px 20px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color: #422f75;
+        }
+        label {
+            background-color: #000000;
+            width: 10%;
+            text-align: center;
+            padding: 10px;
+            color: white;
+            font-size: 14px;
+            align-content: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        select {
+            width: 200px; /* 원하는 너비설정 */
+            height: 50px;
+            padding: .8em .5em; /* 여백으로 높이 설정 */
+            font-family: inherit;  /* 폰트 상속 */
+            border: 1px solid #999;
+            border-radius: 0px; /* iOS 둥근모서리 제거 */
+        }
+
+        .custom-dropdown select {
+            background-color: rgb(66, 47, 117);
+            color: #fff;
+            font-size: inherit;
+            padding: .5em;
+            padding-right: 2.5em;
+            border: 0;
+            margin: 0;
+            border-radius: 3px;
+            text-indent: 0.01px;
+            text-overflow: '';
+            -webkit-appearance: button; /* hide default arrow in chrome OSX */
+        }
+
+        {#.custom-dropdown::before,#}
+        {#.custom-dropdown::after {#}
+        {#    content: "";#}
+        {#    position: absolute;#}
+        {#    pointer-events: none;#}
+        {#}#}
+        {##}
+        {#.custom-dropdown::after { /*  Custom dropdown arrow */#}
+        {#    content: "\25BC";#}
+        {#    height: 1em;#}
+        {#    font-size: .625em;#}
+        {#    line-height: 1;#}
+        {#    right: 1.2em;#}
+        {#    top: 50%;#}
+        {#    margin-top: -.5em;#}
+        {#}#}
+
+        {#.custom-dropdown::before { /*  Custom dropdown arrow cover */#}
+        {#    width: 2em;#}
+        {#    right: 0;#}
+        {#    top: 0;#}
+        {#    bottom: 0;#}
+        {#    border-radius: 0 3px 3px 0;#}
+        {#}#}
+
+        {#.custom-dropdown select[disabled] {#}
+        {#    color: rgba(0,0,0,.3);#}
+        {#}#}
+        {##}
+        {#.custom-dropdown select[disabled]::after {#}
+        {#    color: rgba(0,0,0,.1);#}
+        {#}#}
+        {##}
+        {#.custom-dropdown::before {#}
+        {#    background-color: rgba(0,0,0,.15);#}
+        {#}#}
+        {##}
+        {#.custom-dropdown::after {#}
+        {#    color: rgba(0,0,0,.4);#}
+        {#}#}
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <ul class="nav">
+                <li>
+                    <a href="./introduction">
+                        <i class="tim-icons icon-notes"></i>
+                            <p>Introduction</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="./fileUpload">
+                        <i class="tim-icons icon-cloud-upload-94"></i>
+                            <p>File Upload</p>
+                    </a>
+                </li>
+                <li class="active ">
+                    <a href="./machineLearning">
+                        <i class="tim-icons icon-spaceship"></i>
+                            <p>Machine Learning</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="./visualization">
+                        <i class="tim-icons icon-molecule-40"></i>
+                            <p>Data Visualization</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="row1">
+                    <div class="col-12">
+                        <div class="card card-chart">
+                            <div class="card-header ">
+                                <div class="row">
+                                    <div class="col-sm-6 text-left">
+                                        <h4 class="card-category" style="font-size:14px">Daumsoft AI LAB</h4>
+                                        <h2 class="card-title">Machine Learning</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="col-12">
+                        <form action="./machineLearning" method="POST" enctype="multipart/form-data">
+                            <div class="align-self-sm-auto">
+                                <span id="data_selection">
+                                    <p style="color: white; font-size: 14pt">데이터 선택(필수)</p>
+                                    <span class="custom-dropdown">
+                                        <label class="selectbtn">Train Data</label>
+                                        <select id="train_data" style="width: 300px">
+                                            <option id="train_data_value"style="display: block;"></option>
+                                            {% for f in train_file_list %}
+                                                <option id="train_data_value" value="{{ f }}" style="display: block;">{{ f }}</option>
+                                            {% endfor %}
+                                        </select><br>
+                                        <label class="selectbtn">Test Data</label>
+                                        <select id="test_data" style="width: 300px">
+                                            <option id="test_data_value" style="display: block;"></option>
+                                            {% for f in test_file_list %}
+                                                <option id="test_data_value" style="display: block;">{{ f }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </span>
+                                </span>
+                            </div><br>
+                            <div class="align-self-sm-auto">
+                                <div id="radio_group1">
+                                    <p style="color: white; font-size: 14pt">임베딩 방식(필수)</p><br>
+                                    <input type=radio name="radio_group1" value="CounterVector" onclick="confirm_radio_group1(this)" style="width:50px; height:16px;">CounterVector
+                                    <input type=radio name="radio_group1" value="TF-IDF" onclick="confirm_radio_group1(this)" style="width:50px; height:16px;">TF-IDF
+                                    <input type=radio name="radio_group1" value="Doc2Vec" onclick="confirm_radio_group1(this)" style="width:56px; height:16px;">Doc2Vec
+                                    <input type=radio name="radio_group1" value="user_defined_embedding" onclick="confirm_radio_group1(this)" style="width:56px; height:16px;">User-Custom
+                                </div><br>
+                                <div id="parameter_group">
+                                    <div class="row3">
+                                        <div class="column" onclick="openTab1('a1');" style="background-color:black";>
+                                            CounterVector Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab1('a2');" style="background-color:black";>
+                                            TF-IDF Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab1('a3');" style="background-color:black";>
+                                            Doc2Vec Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab1('a4');" style="background-color:black";>
+                                            User Parameter
+                                        </div>
+
+                                        <div id="a1" class="containerTab1" style="display:none;background-color:black">
+                                            <table style="width: 50%" align="center">
+                                                <tr>
+                                                    <td>min_df</td>
+                                                    <td><input type="text" value="1" name="TextBar1" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_df</td>
+                                                    <td><input type="text" value="1.0" name="TextBar1" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_features</td>
+                                                    <td><input type="text" value="None" name="TextBar1" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="a2" class="containerTab1" style="display:none;background-color:black">
+                                            <table style="width: 50%" align="center">
+                                                <tr>
+                                                    <td>min_df</td>
+                                                    <td><input type="text" value="1" name="TextBar2" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_df</td>
+                                                    <td><input type="text" value="1.0" name="TextBar2" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_features</td>
+                                                    <td><input type="text" value="None" name="TextBar2" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="a3" class="containerTab1" style="display:none;background-color:black">
+                                            <table style="width: 50%" align="center">
+                                                <tr>
+                                                    <td>dm</td>
+                                                    <td><input type="text" value="0" name="TextBar3" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>vector_size</td>
+                                                    <td><input type="text" value="256" name="TextBar3" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>window</td>
+                                                    <td><input type="text" value="5" name="TextBar3" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>alpha</td>
+                                                    <td><input type="text" value="0.025" name="TextBar3" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>epochs</td>
+                                                    <td><input type="text" value="10" name="TextBar3" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>negative</td>
+                                                    <td><input type="text" value="20" name="TextBar3" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="a4" class="containerTab1" style="display:none;background-color:black">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br><br><br>
+                            <div class="align-self-sm-auto">
+                                <span class="custom-dropdown">
+                                    <input type="checkbox" name="pre-embed" value="pre-embed" onclick="confirm_checkbox1(this)" style="width:50px; height:16px;">Pre-Embed&nbsp
+                                    <select id="embeded_model" style="width: 350px">
+                                        <option id="embeded_model_value"style="display: block;"></option>
+                                        {% for e in embed_model_list %}
+                                            <option id="embeded_model_value" value="{{ e }}" style="display: block;">{{ e }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </span><br><br>
+                            </div>
+                            <div class="align-self-sm-auto">
+                                <div id="radio_group2">
+                                    <p style="color: white; font-size: 14pt">기계학습 방식(선택)</p><br>
+                                    <input type=radio name="radio_group2" value="Logistic" onclick="confirm_radio_group2(this)" style="width:50px; height:16px;;">Logistic
+                                    <input type=radio name="radio_group2" value="SVM" onclick="confirm_radio_group2(this)" style="width:50px; height:16px;">SVM
+                                    <input type=radio name="radio_group2" value="RandomForest" onclick="confirm_radio_group2(this)" style="width:56px; height:16px;">RandomForest
+                                    <input type=radio name="radio_group2" value="FNN" onclick="confirm_radio_group2(this)" style="width:56px; height:16px;">FNN
+                                    <input type=radio name="radio_group2" value="user_defined_machine_learning" onclick="confirm_radio_group2(this)" style="width:56px; height:16px;">User-Custom
+                                </div><br>
+                                <div id="parameter_group">
+                                    <div class="row4">
+                                        <div class="column" onclick="openTab2('b1');" style="background-color:black";>
+                                            Logistic Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab2('b2');" style="background-color:black";>
+                                            SVM Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab2('b3');" style="background-color:black";>
+                                            RandomForest Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab2('b4');" style="background-color:black";>
+                                            FNN Parameter
+                                        </div>
+                                        <div class="column" onclick="openTab2('b5');" style="background-color:black";>
+                                            User Parameter
+                                        </div>
+
+                                        <div id="b1" class="containerTab2" style="display:none;background-color:black">
+                                            <table style="width: 50%" align="center">
+                                                <tr>
+                                                    <td>penalty</td>
+                                                    <td><input type="text" value="l2" name="TextBar5" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>C</td>
+                                                    <td><input type="text" value="1.0" name="TextBar5" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>random_state</td>
+                                                    <td><input type="text" value="42" name="TextBar5" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_iter</td>
+                                                    <td><input type="text" value="100" name="TextBar5" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>l1_ratio</td>
+                                                    <td><input type="text" value="None" name="TextBar5" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="b2" class="containerTab2" style="display:none;background-color:black">
+                                            <table style="width: 50%" align="center">
+                                                <tr>
+                                                    <td>loss</td>
+                                                    <td><input type="text" value="hinge" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>penalty</td>
+                                                    <td><input type="text" value="l2" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>alpha</td>
+                                                    <td><input type="text" value="0.0001" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>l1_ratio</td>
+                                                    <td><input type="text" value="0.15" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_iter</td>
+                                                    <td><input type="text" value="1000" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>random_state</td>
+                                                    <td><input type="text" value="42" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>learning_rate</td>
+                                                    <td><input type="text" value="optimal" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>eta0</td>
+                                                    <td><input type="text" value="0.0" name="TextBar6" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="b3" class="containerTab2" style="display:none;background-color:black">
+                                            <table style="width: 50%" align="center">
+                                                <tr>
+                                                    <td>n_estimators</td>
+                                                    <td><input type="text" value="100" name="TextBar7" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>max_depth</td>
+                                                    <td><input type="text" value="None" name="TextBar7" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>random_state</td>
+                                                    <td><input type="text" value="42" name="TextBar7" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="b4" class="containerTab2" style="display:none;background-color:black">
+                                            <table style="width: 60%" align="center">
+                                                <tr>
+                                                    <td>input_layer_units</td>
+                                                    <td><input type="text" value="64" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>hidden_layer_units</td>
+                                                    <td><input type="text" value="64" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>hidden_layer_count</td>
+                                                    <td><input type="text" value="1" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>input_layer_activation</td>
+                                                    <td><input type="text" value="relu" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>hidden_layer_activation</td>
+                                                    <td><input type="text" value="relu" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>output_layer_activation</td>
+                                                    <td><input type="text" value="softmax" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>optimizer</td>
+                                                    <td><input type="text" value="adam" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>epochs</td>
+                                                    <td><input type="text" value="30" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>batch_size</td>
+                                                    <td><input type="text" value="100" name="TextBar8" style="width: 300px; text-align: center"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                        <div id="b5" class="containerTab2" style="display:none;background-color:black">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br><br><br>
+                            <div class="align-self-sm-auto">
+                                <span class="custom-dropdown">
+                                    <input type="checkbox" name="pre-train" value="pre-train" onclick="confirm_checkbox2(this)" style="width:50px; height:16px;">Pre-Train&nbsp&nbsp&nbsp&nbsp
+                                    <select id="machine_model" style="width: 350px">
+                                        <option id="machine_model_value"style="display: block;"></option>
+                                        {% for m in machine_model_list %}
+                                            <option id="machine_model_value" value="{{ m }}" style="display: block;">{{ m }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </span><br><br>
+                            </div>
+                            <div class="align-self-sm-auto">
+                                <div id="radio_group3">
+                                    <p style="color: white; font-size: 14pt">차원 축소 방식(필수)</p><br>
+                                    <input type=radio name="radio_group3" value="PCA" onclick="confirm_radio_group3(this)" style="width:50px; height:16px;" data-toggle="tooltip" data-placement="bottom" title="CounterVector와 TF-IDF 전용">PCA
+                                    <input type=radio name="radio_group3" value="MDS" onclick="confirm_radio_group3(this)" style="width:50px; height:16px;">MDS
+                                    <input type=radio name="radio_group3" value="TSNE" onclick="confirm_radio_group3(this)" style="width:56px; height:16px;">TSNE
+                                    <input type=radio name="radio_group3" value="user_defined_dimension_reduction" onclick="confirm_radio_group3(this)" style="width:56px; height:16px;">User-Custom
+                                </div>
+                            </div><br>
+                            <input id="submit" type="submit" name="visual_button" value="시각화" onclick="return get_check_list(this);">
+                        </form>
+                        <script type="text/javascript">
+
+                            var traindata;
+                            var testdata;
+                            var embededmodel;
+                            var machinemodel;
+
+                            $("#train_data").click(function() {
+                                var data = document.getElementById('train_data');
+                                traindata = data.options[data.selectedIndex].value;
+                            })
+
+                            $("#test_data").click(function() {
+                                var data = document.getElementById('test_data');
+                                testdata = data.options[data.selectedIndex].value;
+                            })
+
+                            $("#embeded_model").click(function() {
+                                var data = document.getElementById('embeded_model');
+                                embededmodel = data.options[data.selectedIndex].value;
+                            })
+
+                            $("#machine_model").click(function() {
+                                var data = document.getElementById('machine_model');
+                                machinemodel = data.options[data.selectedIndex].value;
+                            })
+
+                            var e_checked;
+                            var m_checked;
+                            var d_checked;
+                            var p_checked1;
+                            var p_checked2;
+
+                            var textbar_id1;
+                            var textbar_id2;
+
+                            function confirm_radio_group1(box) {
+                                if (box.checked == true) {
+                                    console.log(box.value);
+                                    e_checked = box.value;
+                                }
+                            }
+
+                            function confirm_checkbox1(box) {
+                                if (box.checked == true) {
+                                    console.log(box.value);
+                                    p_checked1 = box.value;
+                                } else {
+                                    p_checked1 = '';
+                                }
+                            }
+
+                            function confirm_radio_group2(box) {
+                                if (box.checked == true) {
+                                    console.log(box.value);
+                                    m_checked = box.value;
+                                }
+                            }
+
+                            function confirm_checkbox2(box) {
+                                if (box.checked == true) {
+                                    console.log(box.value);
+                                    p_checked2 = box.value;
+                                } else {
+                                    p_checked2 = '';
+                                }
+                            }
+
+                            function confirm_radio_group3(box) {
+                                if (box.checked == true) {
+                                    console.log(box.value);
+                                    d_checked = box.value;
+                                }
+                            }
+
+                            function openTab1(tabName) {
+                                var x = document.getElementsByClassName("containerTab1");
+                                for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";
+                                }
+                                document.getElementById(tabName).style.display = "block";
+
+                                textbar_id1 = tabName;
+                            }
+
+                            function openTab2(tabName) {
+                                var x = document.getElementsByClassName("containerTab2");
+                                for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";
+                                }
+                                document.getElementById(tabName).style.display = "block";
+
+                                textbar_id2 = tabName;
+                            }
+
+                            function get_check_list() {
+
+                                var parameter1 = new Array;
+                                var parameter2 = new Array;
+
+                                for (var i = 1; i < 5; i++) {
+                                    if (textbar_id1 == 'a' + String(i)) {
+                                        var elements = document.getElementsByName("TextBar" + String(i));
+                                        for (var i = 0; i < elements.length; i++) {
+                                            parameter1.push(elements[i].value);
+                                        }
+                                    }
+                                }
+
+                                for (var i = 1; i < 6; i++) {
+                                    if (textbar_id2 == 'b' + String(i)) {
+                                        var elements = document.getElementsByName("TextBar" + String(i+4));
+                                        for (var i = 0; i < elements.length; i++) {
+                                            parameter2.push(elements[i].value);
+                                        }
+                                    }
+                                }
+
+
+                                var json = {
+                                    "trainData": traindata,
+                                    "testData": testdata,
+                                    "embed_type": e_checked,
+                                    "embed_value": parameter1,
+                                    "is_pre_embed": p_checked1,
+                                    "pre_embed_model": embededmodel,
+                                    "machine_type": m_checked,
+                                    "machine_value": parameter2,
+                                    "is_pre_machine": p_checked2,
+                                    "pre_machine_model": machinemodel,
+                                    "dimension_type": d_checked,
+                                }
+
+                                document.getElementById('submit').value = JSON.stringify(json);
+                            }
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

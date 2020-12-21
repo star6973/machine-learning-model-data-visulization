@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+        데이터 시각화
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../static/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <style>
+        input[type=text], select {
+            height: 50px;
+            width: 100px;
+            position: relative;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            height: 50px;
+            width: 100px;
+            position: relative;
+            background-color: #422f75;
+            color: white;
+            padding: 14px 20px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color: #800080;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <ul class="nav">
+                <li>
+                    <a href="./introduction">
+                        <i class="tim-icons icon-notes"></i>
+                            <p>Introduction</p>
+                    </a>
+                </li>
+                <li class="active ">
+                    <a href="./fileUpload">
+                        <i class="tim-icons icon-cloud-upload-94"></i>
+                            <p>File Upload</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="./machineLearning">
+                        <i class="tim-icons icon-spaceship"></i>
+                            <p>Machine Learning</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="./visualization">
+                        <i class="tim-icons icon-molecule-40"></i>
+                            <p>Data Visualization</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="main-panel">
+            <div class="content">
+                <div class="row1">
+                    <div class="col-12">
+                        <div class="card card-chart">
+                            <div class="card-header ">
+                                <div class="row">
+                                    <div class="col-sm-6 text-left">
+                                        <h4 class="card-category" style="font-size:14px">Daumsoft AI LAB</h4>
+                                        <h2 class="card-title">File upload</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row2">
+                    <div class="col-12">
+                        <form action="http://127.0.0.1:8080/fileUpload" method="POST" enctype="multipart/form-data">
+                            <div class="table">
+                                <tr>
+                                    <p style="font-size:20px">upload train data(.csv)</p>
+                                    <td><input type="file" value="파일 선택" name="train_file" accept=".csv"></td>
+                                    {% if filename1 %}
+                                        <td>{{ filename1 }} 업로드 완료</td>
+                                    {% endif %}
+                                </tr><br><br>
+                                <tr>
+                                    <p style="font-size:20px">upload test data(.csv)</p>
+                                    <td><input type="file" value="파일 선택" name="test_file" accept=".csv"></td>
+                                    {% if filename2 %}
+                                        <td>{{ filename2 }} 업로드 완료</td>
+                                    {% endif %}
+                                </tr>
+                            </div>
+                            <div>
+                                <td><input type="submit" value="업로드"/></td>
+                            </div>
+                        </form>
+                    </div>
+                </div><br><br>
+                <div class="row3">
+                    <div class="col-12">
+                        <div class="w3-bar w3-black" style="width: 500px">
+                            <button class="w3-bar-item w3-button" onclick="openDatabase('Uploded File')">Uploded File</button>
+                            <button class="w3-bar-item w3-button" onclick="openDatabase('Embedding Model')">Embedding Model</button>
+                            <button class="w3-bar-item w3-button" onclick="openDatabase('MachineLearning Model')">MachineLearning Model</button>
+                        </div>
+                        <div id="Uploded File" class="w3-container w3-display-container openDatabase">
+                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
+                            <div class="w3-container">
+                                <h2>Uploded File</h2>
+                                <p>지금까지 업로드 된 파일 목록</p>
+                                <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-pale-red">OPEN</button>
+                                <div id="id01" class="w3-modal">
+                                    <div class="w3-modal-content w3-animate-zoom w3-card-4">
+                                        <header class="w3-container w3-pale-red">
+                                            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                            <h2>Uploaded File List</h2>
+                                        </header>
+                                        <div class="w3-bar w3-border-bottom">
+                                            <button class="tablink w3-bar-item w3-button" onclick="openDataList(event, 'Train')">TRAIN DATA</button>
+                                            <button class="tablink w3-bar-item w3-button" onclick="openDataList(event, 'Test')">TEST DATA</button>
+                                        </div>
+
+                                        <div id="Train" class="w3-container data">
+                                            <br>
+                                            <table class="w3-table-all w3-centered">
+                                                {% for train in train_file_list %}
+                                                    <tr>
+                                                        <td><a href="http://127.0.0.1:8080/data/train_csv/{{ train }}">{{ train }}</a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                            <br>
+                                       </div>
+
+                                        <div id="Test" class="w3-container data">
+                                            <br>
+                                            <table class="w3-table-all w3-centered">
+                                            {% for test in test_file_list %}
+                                                <tr>
+                                                    <td><a href="http://127.0.0.1:8080/data/test_csv/{{ test }}">{{ test }}</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                            </table>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="Embedding Model" class="w3-container w3-display-container openDatabase" style="display:none">
+                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
+                            <div class="w3-container">
+                                <h2>Embedding Model</h2>
+                                <p>지금까지 업로드 된 임베딩 모델</p>
+                                <button onclick="document.getElementById('id02').style.display='block'" class="w3-button w3-pale-red">OPEN</button>
+                                <div id="id02" class="w3-modal">
+                                    <div class="w3-modal-content w3-animate-zoom w3-card-4">
+                                        <header class="w3-container w3-pale-red">
+                                            <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                            <h2>Embedding Model List</h2>
+                                        </header>
+                                        <div class="w3-bar w3-border-bottom">
+                                            <button class="tablink2 w3-bar-item w3-button" onclick="openDataList2(event, 'Model1')">MODEL DATA</button>
+                                        </div>
+
+                                        <div id="Model1" class="w3-container data2">
+                                            <br>
+                                            <table class="w3-table-all w3-centered">
+                                                {% for model in embed_model_list %}
+                                                    <tr>
+                                                        <td>{{ model }}</td>
+                                                        <td><a href="http://127.0.0.1:8080/data/embed/{{ model }}" download>download</a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                            <br>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="MachineLearning Model" class="w3-container w3-display-container openDatabase" style="display:none">
+                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
+                            <div class="w3-container">
+                                <h2>MachineLearning Model</h2>
+                                <p>지금까지 업로드 된 머신러닝 모델</p>
+                                <button onclick="document.getElementById('id03').style.display='block'" class="w3-button w3-pale-red">OPEN</button>
+                                <div id="id03" class="w3-modal">
+                                    <div class="w3-modal-content w3-animate-zoom w3-card-4">
+                                        <header class="w3-container w3-pale-red">
+                                            <span onclick="document.getElementById('id03').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                            <h2>MachineLearning Model List</h2>
+                                        </header>
+                                        <div class="w3-bar w3-border-bottom">
+                                            <button class="tablink3 w3-bar-item w3-button" onclick="openDataList3(event, 'Model2')">MODEL DATA</button>
+                                        </div>
+
+                                        <div id="Model2" class="w3-container data3">
+                                            <br>
+                                            <table class="w3-table-all w3-centered">
+                                                {% for model in machine_model_list %}
+                                                    <tr>
+                                                        <td>{{ model }}</td>
+                                                        <td><a href="http://127.0.0.1:8080/data/machine/{{ model }}" download>download</a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                            <br>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            function openDatabase(databaseName) {
+                                var i;
+                                var x = document.getElementsByClassName("openDatabase");
+                                for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";
+                                }
+                                document.getElementById(databaseName).style.display = "block";
+                            }
+
+                            document.getElementsByClassName("tablink")[0].click();
+
+                            function openDataList(evt, dataName) {
+                                var i, x, tablinks;
+                                x = document.getElementsByClassName("data");
+
+                                for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";
+                                }
+
+                                tablinks = document.getElementsByClassName("tablink");
+                                for (i = 0; i < x.length; i++) {
+                                    tablinks[i].classList.remove("w3-light-grey");
+                                }
+                                document.getElementById(dataName).style.display = "block";
+                                evt.currentTarget.classList.add("w3-light-grey");
+                            }
+
+
+                            document.getElementsByClassName("tablink2")[0].click();
+
+                            function openDataList2(evt, modelName) {
+                                var i, x, tablinks;
+                                x = document.getElementsByClassName("data2");
+
+                                for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";
+                                }
+
+                                tablinks = document.getElementsByClassName("tablink2");
+                                for (i = 0; i < x.length; i++) {
+                                    tablinks[i].classList.remove("w3-light-grey");
+                                }
+                                document.getElementById(modelName).style.display = "block";
+                                evt.currentTarget.classList.add("w3-light-grey");
+                            }
+
+
+                            document.getElementsByClassName("tablink3")[0].click();
+
+                            function openDataList3(evt, modelName) {
+                                var i, x, tablinks;
+                                x = document.getElementsByClassName("data3");
+
+                                for (i = 0; i < x.length; i++) {
+                                    x[i].style.display = "none";
+                                }
+
+                                tablinks = document.getElementsByClassName("tablink3");
+                                for (i = 0; i < x.length; i++) {
+                                    tablinks[i].classList.remove("w3-light-grey");
+                                }
+                                document.getElementById(modelName).style.display = "block";
+                                evt.currentTarget.classList.add("w3-light-grey");
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
