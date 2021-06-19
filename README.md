@@ -1,7 +1,7 @@
-Daumsoft AI Lab Internship Project
+VAIV Company Internship
 ====
   
-## Project Theme: Machine Learning Classification Model Visualization Web Service
+## Machine Learning Classification Model Visualization Web Service
 1. 주제
 
     머신러닝 분류 모델 시각화 웹 서비스
